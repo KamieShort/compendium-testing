@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { fetchQuotes } from '../../services/fetch';
+import Search from '../../components/Search';
 
 export default function QuoteList() {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
 
   useEffect(() => {
     const getQuotes = async () => {
@@ -21,15 +18,25 @@ export default function QuoteList() {
     getQuotes();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchQuotes(search);
+      setQuotes(data);
+    };
+    fetchData();
+  }, [search]);
+
   return (
     <>
       {}
-      <h2>Futurama Quotes</h2>
+      <h1>Futurama Quotes</h1>
       {loading ? (
         <p>Loading..</p>
       ) : (
         <>
-          <input placeholder="search" value={search} onChange={handleSearch} />
+          <div>
+            <Search query={search} setQuery={setSearch} />
+          </div>
 
           {quotes.map((quote) => (
             <div key={quote.id}>

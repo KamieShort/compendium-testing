@@ -15,9 +15,10 @@ describe('QuoteList', () => {
 
     screen.getByText(/loading/i);
 
-    // await screen.getByText('antenna');
+    const name = await screen.findByText('Dr Zoidberg');
+    expect(name).toBeInTheDocument();
 
-    const search = screen.getByPlaceholderText('Search');
+    const search = screen.queryAllByText('Search');
     userEvent.type(search, 'antenna');
 
     return waitFor(() => {
